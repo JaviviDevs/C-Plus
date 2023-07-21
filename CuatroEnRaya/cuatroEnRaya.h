@@ -16,6 +16,10 @@ class CuatroEnRaya {
         void pintarContenido(); // Pintar el contenido de la matriz
         void mostrarTablero();//Muestra el tablero 
 
+        /*Logica del juego*/
+        void insertarficha(char ficha,int columna); //Inserta una ficha en la columna que se le dice
+        int gravedad(int columna); //Dado una columna, calcula la fila que le coresponde a la ficha a insertar
+
     private:
         int fils; // Filas del tablero
         int cols; // Columnas del tablero

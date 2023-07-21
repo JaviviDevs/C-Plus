@@ -1,6 +1,10 @@
 // archivo.cpp
 #include "cuatroEnRaya.h"
 
+/********************************************************************************************/
+/*************************** Creación del tablero y mostrarlo ******************************/
+/*******************************************************************************************/
+
 // Constructor por defecto
 CuatroEnRaya::CuatroEnRaya() {
     this->fils=8;
@@ -33,9 +37,6 @@ void CuatroEnRaya::InicializarTablero(int fils, int cols){
             this->tablero[fil][col]=' ';
         }
     }
-
-
-
 }
 
 //Destructor
@@ -81,7 +82,48 @@ void CuatroEnRaya::mostrarTablero(){
     this->pintarLimitesSuperiorInferior();
 }
 
+
+/********************************************************************************************/
+/*******************************************************************************************/
+
+/********************************************************************************************/
+/*********************************** Lógica del programa ************************************/
+/*******************************************************************************************/
+
+int CuatroEnRaya::gravedad(int columna){
+    int fila=0;
+    bool encontrado=false;
+
+    //Se recorre la columna entera
+    for(int pos_fila=0;pos_fila<this->fils && !encontrado;pos_fila++){
+        if(this->tablero[pos_fila][columna]!=' '){ // Si encuentras una ficha
+            fila=pos_fila-1; //Devuelves la fila superior
+            encontrado=true;
+        }else{
+            fila=this->fils-1;
+        }
+    }
+    return fila;
+}
+
+void CuatroEnRaya::insertarficha(char ficha,int columna){
+    int fila=gravedad(columna);
+    if(fila >-1){
+        this->tablero[fila][columna]=ficha;
+    }
+   
+}
+
 // Comienza la partida
 void CuatroEnRaya::comenzar() {
+    int posicion_ficha=0;
     this->mostrarTablero();
+    cout<<"Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
+    cin>>posicion_ficha;
+    while(posicion_ficha!=-1){
+        this->insertarficha('X',posicion_ficha);
+        this->mostrarTablero();
+        cout<<"Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
+        cin>>posicion_ficha;
+    }
 }
