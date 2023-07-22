@@ -151,9 +151,21 @@ bool CuatroEnRaya::compruebaEnHorizontal(char ficha,int fila, int columna){
 } 
 
 bool CuatroEnRaya::compruebaEnVertical(char ficha,int fila, int columna){
-    bool ganador=false;
+   bool ganador=true;
+    // Si la fila - 3 < la fila 0, ya que si no se saldria del tablero 
+    if(fila - 3 > 0){
+        for(int pos_sig=1;pos_sig<this->numeroRaya;pos_sig++){
+            if(this->tablero[fila-pos_sig][columna]!=ficha){
+                ganador=false;
+            }
+        }
+    }else{
+        ganador=false;
+    }
+
     return ganador;
 } 
+
 bool CuatroEnRaya::compruebaEnDiagonal(char ficha,int fila, int columna){
     bool ganador=false;
     return ganador;
