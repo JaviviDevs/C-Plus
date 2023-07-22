@@ -13,8 +13,8 @@ CuatroEnRaya::CuatroEnRaya() {
 }
 
 // Constructor por parámetros
-// fils: numero de filas
-// cols: numero de columnas
+// @param fils: numero de filas
+// @param cols: numero de columnas
 CuatroEnRaya::CuatroEnRaya(int fils, int cols){
     this->fils=fils;
     this->cols=cols;
@@ -22,8 +22,8 @@ CuatroEnRaya::CuatroEnRaya(int fils, int cols){
 }
 
 // Inicialización del tablero
-// fils: numero de filas
-// cols: numero de columnas
+// @param fils: numero de filas
+// @param cols: numero de columnas
 void CuatroEnRaya::InicializarTablero(int fils, int cols){
     //Reserva del espacio dinamico
     this->tablero=new char*[fils];
@@ -46,6 +46,7 @@ CuatroEnRaya::~CuatroEnRaya(){
         delete[] tablero[i];
     }
     delete[] tablero;
+    this->fils,this->cols=0;
 }
 
 //Pinta cuando se muestra el table los limites horizontales (------)
@@ -90,6 +91,9 @@ void CuatroEnRaya::mostrarTablero(){
 /*********************************** Lógica del programa ************************************/
 /*******************************************************************************************/
 
+//Dado una columna, calcula la fila que le corresponde a la ficha a insertar
+//@param columna: columna en la que calcula la fila
+//@return fila: fila donde tiene que colocarse la ficha
 int CuatroEnRaya::gravedad(int columna){
     int fila=0;
     bool encontrado=false;
@@ -106,6 +110,9 @@ int CuatroEnRaya::gravedad(int columna){
     return fila;
 }
 
+//Inserta una ficha dado una columna 
+//@param ficha: ficha a insertar (X o O)
+//@param columna: columna donde insertar la ficha
 void CuatroEnRaya::insertarficha(char ficha,int columna){
     int fila=gravedad(columna);
     if(fila >-1){
@@ -114,16 +121,86 @@ void CuatroEnRaya::insertarficha(char ficha,int columna){
    
 }
 
+/* ############################# Logica para comprobar el ganador #########################*/
+
+/*
+//Comprueba si hay 4 en raya de forma horizontal. 
+Como se recorre el tablero de izquierda a derecha, en cuanto encuentre un simbolo (X o O) 
+solo comprobará si tiene otros 3 adyacentes a su derecha pues este símbolo será el 
+extremo izquierdo del cuatro en raya, es decir, no puede haber a su izquierda otro símbolo igual.
+
+@param fila: fila en la que se ha encontrado el primer simbolo
+@param columna: columna en la que se ha encontrado el primer simbolo
+@param ficha: X o O
+@return ganador, true si hay cuatro en raya, false si no.
+*/
+bool CuatroEnRaya::compruebaEnHorizontal(char ficha,int fila, int columna){
+    bool ganador=true;
+    // Si la columna + 3 < numero de columnas, ya que si no se saldria del tablero 
+    if(columna + 3 < this->cols){
+        for(int pos_sig=1;pos_sig<this->numeroRaya;pos_sig++){
+            if(this->tablero[fila][columna+pos_sig]!=ficha){
+                ganador=false;
+            }
+        }
+    }else{
+        ganador=false;
+    }
+
+    return ganador;
+} 
+
+bool CuatroEnRaya::compruebaEnVertical(char ficha,int fila, int columna){
+    bool ganador=false;
+    return ganador;
+} 
+bool CuatroEnRaya::compruebaEnDiagonal(char ficha,int fila, int columna){
+    bool ganador=false;
+    return ganador;
+}
+
+
+/*
+Comprobar ganador, empieza desde la esquina inferior izquierda, hacia la derecha y hacia arriba.
+De manera que primero analiza si hay cuatro en raya en horizontal, si no hay, comprueba si hay en vertical 
+y si no en diagonal.
+@return cuatroEnRaya: 0 si empate, 1 si gana jugador 1, 2 si gana jugador 2
+*/
+int CuatroEnRaya::comprobarGanador(){
+    int cuatroEnRaya=-1;
+    for(int fil=this->fils-1; fil>=0 && cuatroEnRaya==-1; fil--){
+        for(int col=0;col<this->cols;col++){
+            if(this->tablero[fil][col]=='X'){
+                if(this->compruebaEnHorizontal('X',fil,col)){
+                    cuatroEnRaya=1;
+                }else if(this->compruebaEnVertical('X',fil,col)){
+                    cuatroEnRaya=1;
+                }else if(this->compruebaEnDiagonal('X',fil,col)){
+                    cuatroEnRaya=1;
+                }
+            }
+        }
+    }
+    return cuatroEnRaya;
+} 
+/*####################################################################################*/
+
 // Comienza la partida
 void CuatroEnRaya::comenzar() {
     int posicion_ficha=0;
+    int ganador=-1;
     this->mostrarTablero();
     cout<<"Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
     cin>>posicion_ficha;
-    while(posicion_ficha!=-1){
+    while(posicion_ficha!=-1 && ganador==-1){
         this->insertarficha('X',posicion_ficha);
         this->mostrarTablero();
-        cout<<"Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
-        cin>>posicion_ficha;
+        ganador=this->comprobarGanador();
+        if(ganador==-1){ 
+            cout<<"Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
+            cin>>posicion_ficha;
+        }
+        
     }
+    cout<<ganador;
 }
