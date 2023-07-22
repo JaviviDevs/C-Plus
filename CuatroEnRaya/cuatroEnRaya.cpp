@@ -182,12 +182,12 @@ int CuatroEnRaya::comprobarGanador(){
     int cuatroEnRaya=-1;
     for(int fil=this->fils-1; fil>=0 && cuatroEnRaya==-1; fil--){
         for(int col=0;col<this->cols;col++){
-            if(this->tablero[fil][col]=='X'){
-                if(this->compruebaEnHorizontal('X',fil,col)){
+            if(this->tablero[fil][col]!=' '){
+                if(this->compruebaEnHorizontal(this->tablero[fil][col],fil,col)){
                     cuatroEnRaya=1;
-                }else if(this->compruebaEnVertical('X',fil,col)){
+                }else if(this->compruebaEnVertical(this->tablero[fil][col],fil,col)){
                     cuatroEnRaya=1;
-                }else if(this->compruebaEnDiagonal('X',fil,col)){
+                }else if(this->compruebaEnDiagonal(this->tablero[fil][col],fil,col)){
                     cuatroEnRaya=1;
                 }
             }
@@ -197,19 +197,27 @@ int CuatroEnRaya::comprobarGanador(){
 } 
 /*####################################################################################*/
 
+
 // Comienza la partida
 void CuatroEnRaya::comenzar() {
     int posicion_ficha=0;
     int ganador=-1;
+    int turno=0;
     this->mostrarTablero();
-    cout<<"Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
+    cout<<"Jugador " << turno+1 <<": Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
     cin>>posicion_ficha;
     while(posicion_ficha!=-1 && ganador==-1){
-        this->insertarficha('X',posicion_ficha);
+        if(turno%2==0){
+            this->insertarficha('X',posicion_ficha);
+        }else{
+             this->insertarficha('O',posicion_ficha);
+        }
+
         this->mostrarTablero();
         ganador=this->comprobarGanador();
+        turno=(turno+1)%2;
         if(ganador==-1){ 
-            cout<<"Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
+            cout<<"Jugador " << turno+1 <<": Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
             cin>>posicion_ficha;
         }
         
