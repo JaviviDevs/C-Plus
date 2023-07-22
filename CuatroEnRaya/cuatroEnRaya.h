@@ -23,6 +23,7 @@ class CuatroEnRaya {
         bool compruebaEnHorizontal(char ficha,int fila, int columna); //Comprueba si hay 4 en raya de forma horizontal
         bool compruebaEnVertical(char ficha,int fila, int columna); //Comprueba si hay 4 en raya de forma vertical
         bool compruebaEnDiagonal(char ficha,int fila, int columna); //Comprueba si hay 4 en raya de forma diagonal
+
     private:
         int fils; // Filas del tablero
         int cols; // Columnas del tablero

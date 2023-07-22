@@ -137,7 +137,7 @@ extremo izquierdo del cuatro en raya, es decir, no puede haber a su izquierda ot
 bool CuatroEnRaya::compruebaEnHorizontal(char ficha,int fila, int columna){
     bool ganador=true;
     // Si la columna + 3 < numero de columnas, ya que si no se saldria del tablero 
-    if(columna + 3 < this->cols){
+    if(columna + (this->numeroRaya-1) < this->cols){
         for(int pos_sig=1;pos_sig<this->numeroRaya;pos_sig++){
             if(this->tablero[fila][columna+pos_sig]!=ficha){
                 ganador=false;
@@ -153,7 +153,7 @@ bool CuatroEnRaya::compruebaEnHorizontal(char ficha,int fila, int columna){
 bool CuatroEnRaya::compruebaEnVertical(char ficha,int fila, int columna){
    bool ganador=true;
     // Si la fila - 3 < la fila 0, ya que si no se saldria del tablero 
-    if(fila - 3 > 0){
+    if(fila - (this->numeroRaya-1) > 0){
         for(int pos_sig=1;pos_sig<this->numeroRaya;pos_sig++){
             if(this->tablero[fila-pos_sig][columna]!=ficha){
                 ganador=false;
@@ -167,7 +167,36 @@ bool CuatroEnRaya::compruebaEnVertical(char ficha,int fila, int columna){
 } 
 
 bool CuatroEnRaya::compruebaEnDiagonal(char ficha,int fila, int columna){
-    bool ganador=false;
+   bool ganador=false;
+   bool diagonalAscendente=true;
+   bool diagonalDescendente=true;
+    // Si la columna + 3 < numero de columnas, ya que si no se saldria del tablero 
+    if(columna + (this->numeroRaya-1) < this->cols){
+        for(int pos_sig=1;pos_sig<this->numeroRaya;pos_sig++){
+            //Diagonal ascendente derecha
+            if(fila - (this->numeroRaya-1) > 0){
+                if(this->tablero[fila-pos_sig][columna+pos_sig]!=ficha){
+                    diagonalAscendente=false;
+                }
+            }else{
+                diagonalAscendente=false;
+            }
+
+            //Diagonal descendente derecha
+            if(fila + (this->numeroRaya-1) < this->fils){
+                if(this->tablero[fila+pos_sig][columna+pos_sig]!=ficha){
+                    diagonalDescendente=false;
+                }
+            }else{
+                diagonalDescendente=false;
+            }
+            
+        }
+
+        if(diagonalAscendente || diagonalDescendente){
+            ganador=true;
+        }
+    }
     return ganador;
 }
 
@@ -215,12 +244,13 @@ void CuatroEnRaya::comenzar() {
 
         this->mostrarTablero();
         ganador=this->comprobarGanador();
-        turno=(turno+1)%2;
         if(ganador==-1){ 
+            turno=(turno+1)%2;
             cout<<"Jugador " << turno+1 <<": Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
             cin>>posicion_ficha;
+        }else{
+           cout<<"Jugador: " << turno+1<<" es el ganador"<<'\n';
         }
         
     }
-    cout<<ganador;
 }
