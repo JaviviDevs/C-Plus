@@ -227,8 +227,7 @@ int CuatroEnRaya::comprobarGanador(){
 /*####################################################################################*/
 
 
-// Comienza la partida
-void CuatroEnRaya::comenzar() {
+void CuatroEnRaya::jugar1vs1(){
     int posicion_ficha=0;
     int ganador=-1;
     int turno=0;
@@ -236,21 +235,40 @@ void CuatroEnRaya::comenzar() {
     cout<<"Jugador " << turno+1 <<": Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
     cin>>posicion_ficha;
     while(posicion_ficha!=-1 && ganador==-1){
-        if(turno%2==0){
-            this->insertarficha('X',posicion_ficha);
-        }else{
-             this->insertarficha('O',posicion_ficha);
-        }
-
-        this->mostrarTablero();
-        ganador=this->comprobarGanador();
-        if(ganador==-1){ 
-            turno=(turno+1)%2;
+        if(posicion_ficha<-1 || posicion_ficha>(this->fils-1)){
             cout<<"Jugador " << turno+1 <<": Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
             cin>>posicion_ficha;
         }else{
-           cout<<"Jugador: " << turno+1<<" es el ganador"<<'\n';
-        }
-        
+            if(turno%2==0){
+                this->insertarficha('X',posicion_ficha);
+            }else{
+                this->insertarficha('O',posicion_ficha);
+            }
+
+            this->mostrarTablero();
+            ganador=this->comprobarGanador();
+            if(ganador==-1){ 
+                turno=(turno+1)%2;
+                cout<<"Jugador " << turno+1 <<": Introduce un número del 0 al "<<(this->fils-1)<<" para insertar una ficha: " << "\n";
+                cin>>posicion_ficha;
+            }else{
+            cout<<"Jugador: " << turno+1<<" es el ganador"<<'\n';
+            }
+        } 
     }
+}
+// Comienza la partida
+void CuatroEnRaya::comenzar() {
+    int opcion=-1;
+    cout<<"--------------------------------------------------------\n";
+    cout<<"--------------- INICIO ---------------------------------\n";
+    cout<<"--------------- (0) Jugar 1 vs 1 ------------------------\n";
+    cout<<"--------------- (-1) Salir ------------------------------\n";
+    cout<<"--------------------------------------------------------\n";
+
+    cin>>opcion;
+    if(opcion==0){
+        this->jugar1vs1();
+    }
+    
 }

@@ -10,7 +10,7 @@ class CuatroEnRaya {
         CuatroEnRaya(); // Constructor por defecto
         CuatroEnRaya(int fils, int cols); // Constructor
         ~CuatroEnRaya(); //Destructor
-        void comenzar(); //Comenzar el cuatro en raya
+        void comenzar(); //Muestra el menu del juego 
         void InicializarTablero(int fils, int cols); // Inicializa el tablero
         void pintarLimitesSuperiorInferior();//Pintar limites -----
         void pintarContenido(); // Pintar el contenido de la matriz
@@ -23,7 +23,7 @@ class CuatroEnRaya {
         bool compruebaEnHorizontal(char ficha,int fila, int columna); //Comprueba si hay 4 en raya de forma horizontal
         bool compruebaEnVertical(char ficha,int fila, int columna); //Comprueba si hay 4 en raya de forma vertical
         bool compruebaEnDiagonal(char ficha,int fila, int columna); //Comprueba si hay 4 en raya de forma diagonal
-
+        void jugar1vs1(); // Inicia el modo 1p vs 1p
     private:
         int fils; // Filas del tablero
         int cols; // Columnas del tablero
